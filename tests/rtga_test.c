@@ -13,8 +13,8 @@
  *
  */
 int main(void) {
-    tga_t tga;
-    tga_header_t header;
+    TgaImage tga;
+    TgaHeader header;
 
     // Set initial header values
     header.id_length = 0;
@@ -22,13 +22,13 @@ int main(void) {
     header.image_type = UNCOMPRESSED_TRUE_COLOR_IMAGE;
 
     // Set color map specifications
-    tga_color_map_spec_t *color_map_spec = &header.color_map_spec;
+    TgaColorMapSpec *color_map_spec = &header.color_map_spec;
     color_map_spec->first_index = 0;
     color_map_spec->length = 0;
     color_map_spec->pixel_depth = 0;
 
     // Set image specifications
-    tga_image_spec_t *image_spec = &header.image_spec;
+    TgaImageSpec *image_spec = &header.image_spec;
     image_spec->x_origin = 0;
     image_spec->y_origin = 0;
     image_spec->width = 40;

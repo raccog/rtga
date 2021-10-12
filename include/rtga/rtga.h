@@ -11,14 +11,14 @@ typedef enum {
     UNCOMPRESSED_TRUE_COLOR_IMAGE = 2,
     RUN_LENGTH_ENCODED_COLOR_MAPPED_IMAGE = 9,
     RUN_LENGTH_ENCODED_BLACK_AND_WHITE_IMAGE = 11,
-} tga_image_t;
+} TgaImageType;
 
 // Color map specification
 typedef struct {
     uint16_t first_index;
     uint16_t length;
     uint8_t pixel_depth;
-} tga_color_map_spec_t;
+} TgaColorMapSpec;
 
 // Image specification
 typedef struct {
@@ -28,33 +28,33 @@ typedef struct {
     uint16_t height;
     uint8_t pixel_depth;
     uint8_t descriptor;
-} tga_image_spec_t;
+} TgaImageSpec;
 
 // TGA image header
 typedef struct {
     uint8_t id_length;
     bool color_map_type;
-    tga_image_t image_type;
-    tga_color_map_spec_t color_map_spec;
-    tga_image_spec_t image_spec;
-} tga_header_t;
+    TgaImageType image_type;
+    TgaColorMapSpec color_map_spec;
+    TgaImageSpec image_spec;
+} TgaHeader;
 
 // TGA image
 typedef struct {
-    tga_header_t header;
+    TgaHeader header;
     uint8_t *image_id;
     uint8_t *color_map_data;
     uint8_t *image_data;
-} tga_t;
+} TgaImage;
 
 // Allocates memory for a blank TGA image in memory using the 
 // specifications from header.
-void tga_init_blank(tga_t *tga, tga_header_t header);
+void tga_init_blank(TgaImage *tga, TgaHeader header);
 
 // Frees allocated memory for a TGA image.
-void tga_free(tga_t *tga);
+void tga_free(TgaImage *tga);
 
 // Writes a TGA image into a file
-void tga_write_file(tga_t *tga, const char *filename);
+void tga_write_file(TgaImage *tga, const char *filename);
 
 #endif

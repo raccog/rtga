@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void tga_init_blank(tga_t *tga, tga_header_t header) {
+void tga_init_blank(TgaImage *tga, TgaHeader header) {
     assert(tga);
 
     // Allocate image id if it exists
@@ -29,21 +29,21 @@ void tga_init_blank(tga_t *tga, tga_header_t header) {
     tga->header = header;
 }
 
-void tga_free(tga_t *tga) {
+void tga_free(TgaImage *tga) {
     assert(tga);
     free(tga->image_id);
     free(tga->color_map_data);
     free(tga->image_data);
 }
 
-void tga_write_file(tga_t *tga, const char *filename) {
+void tga_write_file(TgaImage *tga, const char *filename) {
     // Open file
     FILE *fp = fopen(filename, "wb");
     assert(fp);
 
     // Convert header into byte array
     // (Hopefully I can find a better method than this monstrosity...)
-    tga_header_t header = tga->header;
+    TgaHeader header = tga->header;
     uint8_t header_bytes[18];
     memcpy(&header_bytes, &header.id_length, 1);
     memcpy(&header_bytes[1], &header.color_map_type, 1);
