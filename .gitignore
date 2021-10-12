@@ -53,3 +53,7 @@ dkms.conf
 
 # Build directories
 build*
+
+# Other ignores
+.DS_Store
+*.swp

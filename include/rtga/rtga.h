@@ -54,4 +54,7 @@ void tga_init_blank(tga_t *tga, tga_header_t header);
 // Frees allocated memory for a TGA image.
 void tga_free(tga_t *tga);
 
+// Writes a TGA image into a file
+void tga_write_file(tga_t *tga, const char *filename);
+
 #endif

@@ -16,3 +16,6 @@ set_target_properties(rtga
 
 # Compile and link rtga
 target_link_libraries(rtga)
+
+# Compile and link tests
+add_subdirectory(tests)
