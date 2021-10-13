@@ -2,7 +2,6 @@
 
 #include <assert.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 void tga_init_blank(TgaImage *tga, TgaHeader header) {
@@ -19,8 +18,7 @@ void tga_init_blank(TgaImage *tga, TgaHeader header) {
     }
     
     // Allocate image data
-    uint8_t pixel_bytes = tga_pixel_bytes(tga);
-    tga->image_data = malloc(header.image_spec.width * header.image_spec.height * pixel_bytes);
+    tga->image_data = malloc(tga_image_size(tga));
 
     // Set header
     tga->header = header;
@@ -71,9 +69,7 @@ void tga_read_file(TgaImage *tga, const char *filename) {
     }
 
     // Write image data to file
-    uint8_t pixel_bytes = tga_pixel_bytes(tga);
-    size_t image_size = tga->header.image_spec.width * tga->header.image_spec.height * pixel_bytes;
-    fread(tga->image_data, 1, image_size, fp);
+    fread(tga->image_data, 1, tga_image_size(tga), fp);
 
     // Close file
     fclose(fp);
@@ -115,24 +111,26 @@ void tga_write_file(TgaImage *tga, const char *filename) {
     }
 
     // Write image data to file
-    uint8_t pixel_bytes = tga_pixel_bytes(tga);
-    size_t image_size = tga->header.image_spec.width * tga->header.image_spec.height * pixel_bytes;
-    fwrite(tga->image_data, 1, image_size, fp);
+    fwrite(tga->image_data, 1, tga_image_size(tga), fp);
 
     // Close file
     fclose(fp);
 }
 
 void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, const uint8_t *color) {
-    const uint8_t pixel_bytes = tga_pixel_bytes(tga);
-    const size_t index = (y * tga->header.image_spec.width + x) * pixel_bytes;
-    memcpy(tga->image_data + index, color, pixel_bytes);
+    const uint8_t pixel_size = tga_pixel_size(tga);
+    const size_t index = (y * tga->header.image_spec.width + x) * pixel_size;
+    memcpy(tga->image_data + index, color, pixel_size);
 }
 
-uint8_t tga_pixel_bytes(TgaImage *tga) {
-    uint8_t pixel_bytes = tga->header.image_spec.pixel_depth / 8;
+uint8_t tga_pixel_size(const TgaImage *tga) {
+    uint8_t pixel_size = tga->header.image_spec.pixel_depth / 8;
     if (tga->header.image_spec.pixel_depth % 8 > 0) {
-        ++pixel_bytes;
+        ++pixel_size;
     }
-    return pixel_bytes;
+    return pixel_size;
+}
+
+size_t tga_image_size(const TgaImage *tga) {
+    return tga->header.image_spec.width * tga->header.image_spec.height * tga_pixel_size(tga);
 }

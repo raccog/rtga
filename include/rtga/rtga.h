@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 // Image data representations 
 typedef enum {
@@ -69,6 +70,8 @@ void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, const uint8_t *color);
 //
 // If the bit depth of a pixel is not divisible by 8, extra blank bits
 // will be added for allignment.
-uint8_t tga_pixel_bytes(TgaImage *tga);
+uint8_t tga_pixel_size(const TgaImage *tga);
+
+size_t tga_image_size(const TgaImage *tga);
 
 #endif
