@@ -72,6 +72,9 @@ void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, const uint8_t *color);
 // will be added for allignment.
 uint8_t tga_pixel_size(const TgaImage *tga);
 
+// Returns the size of the image in bytes.
+//
+// The header is not included in this size.
 size_t tga_image_size(const TgaImage *tga);
 
 #endif
