@@ -22,7 +22,7 @@ void print_tga_image_header(TgaImage *tga) {
  *  image into a file called 'test.tga', and then prints out the header.
  *
  *  When opened by an image viewing software, the TGA image should have
- *  a size of 40x40 pixels, an 8 bit pixel depth, and an alpha layer.
+ *  a size of 10x10 pixels, and an 8 bit pixel depth.
  *
  *  This file is then read into memory and the header is printed out
  *  again.
@@ -53,8 +53,8 @@ int main(void) {
     TgaImageSpec *image_spec = &header.image_spec;
     image_spec->x_origin = 0;
     image_spec->y_origin = 0;
-    image_spec->width = 40;
-    image_spec->height = 40;
+    image_spec->width = 10;
+    image_spec->height = 10;
     image_spec->pixel_depth = 24;
     image_spec->descriptor = 0;
 
@@ -63,6 +63,8 @@ int main(void) {
     printf("Image Before Read:\n");
     print_tga_image_header(&tga);
     printf("\n");
+    const uint8_t BLUE[] = {255, 0, 0};
+    tga_set_pixel(&tga, 0, 0, &BLUE[0]);
     tga_write_file(&tga, "test.tga");
     tga_free(&tga);
 

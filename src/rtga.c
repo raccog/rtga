@@ -19,10 +19,7 @@ void tga_init_blank(TgaImage *tga, TgaHeader header) {
     }
     
     // Allocate image data
-    uint16_t pixel_bytes = header.image_spec.pixel_depth / 8;
-    if (header.image_spec.pixel_depth % 8 > 0) {
-        ++pixel_bytes;
-    }
+    uint8_t pixel_bytes = tga_pixel_bytes(tga);
     tga->image_data = malloc(header.image_spec.width * header.image_spec.height * pixel_bytes);
 
     // Set header
@@ -74,10 +71,7 @@ void tga_read_file(TgaImage *tga, const char *filename) {
     }
 
     // Write image data to file
-    uint16_t pixel_bytes = tga->header.image_spec.pixel_depth / 8;
-    if (tga->header.image_spec.pixel_depth % 8 > 0) {
-        ++pixel_bytes;
-    }
+    uint8_t pixel_bytes = tga_pixel_bytes(tga);
     size_t image_size = tga->header.image_spec.width * tga->header.image_spec.height * pixel_bytes;
     fread(tga->image_data, 1, image_size, fp);
 
@@ -121,13 +115,24 @@ void tga_write_file(TgaImage *tga, const char *filename) {
     }
 
     // Write image data to file
-    uint16_t pixel_bytes = tga->header.image_spec.pixel_depth / 8;
-    if (tga->header.image_spec.pixel_depth % 8 > 0) {
-        ++pixel_bytes;
-    }
+    uint8_t pixel_bytes = tga_pixel_bytes(tga);
     size_t image_size = tga->header.image_spec.width * tga->header.image_spec.height * pixel_bytes;
     fwrite(tga->image_data, 1, image_size, fp);
 
     // Close file
     fclose(fp);
+}
+
+void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, const uint8_t *color) {
+    const uint8_t pixel_bytes = tga_pixel_bytes(tga);
+    const size_t index = (y * tga->header.image_spec.width + x) * pixel_bytes;
+    memcpy(tga->image_data + index, color, pixel_bytes);
+}
+
+uint8_t tga_pixel_bytes(TgaImage *tga) {
+    uint8_t pixel_bytes = tga->header.image_spec.pixel_depth / 8;
+    if (tga->header.image_spec.pixel_depth % 8 > 0) {
+        ++pixel_bytes;
+    }
+    return pixel_bytes;
 }
