@@ -10,15 +10,18 @@ int tga_alloc(TgaImage *tga, TgaHeader header) {
     // Allocate image id if it exists
     if (header.id_length > 0) {
         tga->image_id = malloc(header.id_length);
+        if (!tga->image_id) return 1;
     }
 
     // Allocate color map data if it exists
     if (header.color_map_length > 0) {
         tga->color_map_data = malloc(header.color_map_length);
+        if (!tga->color_map_data) return 1;
     }
     
     // Allocate image data
     tga->image_data = malloc(tga_image_size(&tga->header));
+    if (!tga->image_data) return 1;
 
     // Set header
     tga->header = header;
