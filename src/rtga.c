@@ -79,18 +79,18 @@ int tga_read_file(TgaImage *tga, const char *filename) {
     // Read image id from file if it exists
     if (tga->header.id_length > 0) {
         bytes_read = fread(&tga->image_id, 1, tga->header.id_length, fp);
-        if (bytes_read != HEADER_SIZE) return 2;
+        if (bytes_read != tga->header.id_length) return 2;
     }
 
     // Write color map to file if it exists
     if (tga->header.color_map_length > 0) {
         bytes_read = fread(tga->color_map_data, 1, tga->header.color_map_length, fp);
-        if (bytes_read != HEADER_SIZE) return 2;
+        if (bytes_read != tga->header.color_map_length) return 2;
     }
 
     // Write image data to file
     bytes_read = fread(tga->image_data, 1, tga_image_size(&tga->header), fp);
-    if (bytes_read != HEADER_SIZE) return 2;
+    if (bytes_read != tga_image_size(&tga->header)) return 2;
 
     // Close file
     fclose(fp);
