@@ -26,9 +26,16 @@ void tga_init_blank(TgaImage *tga, TgaHeader header) {
 
 void tga_free(TgaImage *tga) {
     assert(tga);
+
+    // Free all allocated memory
     free(tga->image_id);
     free(tga->color_map_data);
     free(tga->image_data);
+
+    // Assign NULL to all pointers
+    tga->image_id = NULL;
+    tga->color_map_data = NULL;
+    tga->image_data = NULL;
 }
 
 void tga_read_file(TgaImage *tga, const char *filename) {
