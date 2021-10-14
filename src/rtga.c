@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-void tga_init_blank(TgaImage *tga, TgaHeader header) {
+int tga_init_blank(TgaImage *tga, TgaHeader header) {
     assert(tga);
 
     // Allocate image id if it exists
@@ -22,6 +22,8 @@ void tga_init_blank(TgaImage *tga, TgaHeader header) {
 
     // Set header
     tga->header = header;
+
+    return 0;
 }
 
 void tga_free(TgaImage *tga) {
@@ -38,7 +40,7 @@ void tga_free(TgaImage *tga) {
     tga->image_data = NULL;
 }
 
-void tga_read_file(TgaImage *tga, const char *filename) {
+int tga_read_file(TgaImage *tga, const char *filename) {
     // Open file
     FILE *fp = fopen(filename, "rb");
     assert(fp);
@@ -80,9 +82,11 @@ void tga_read_file(TgaImage *tga, const char *filename) {
 
     // Close file
     fclose(fp);
+
+    return 0;
 }
 
-void tga_write_file(TgaImage *tga, const char *filename) {
+int tga_write_file(TgaImage *tga, const char *filename) {
     // Open file
     FILE *fp = fopen(filename, "wb");
     assert(fp);
@@ -122,6 +126,8 @@ void tga_write_file(TgaImage *tga, const char *filename) {
 
     // Close file
     fclose(fp);
+
+    return 0;
 }
 
 void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, const uint8_t *color) {
