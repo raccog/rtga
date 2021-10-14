@@ -42,15 +42,30 @@ typedef struct {
 
 // Allocates memory for a blank TGA image in memory using the 
 // specifications from header.
+//
+// Returns:
+//  0: Success
+//  1: Memory allocation failure
 int tga_alloc(TgaImage *tga, TgaHeader header);
 
 // Frees allocated memory for a TGA image.
 void tga_free(TgaImage *tga);
 
 // Reads s TGA image from a file
+//
+// Returns:
+//  0: Success
+//  1: File open failure
+//  2: File read failure
+//  3: Memory allocation failure
 int tga_read_file(TgaImage *tga, const char *filename);
 
 // Writes a TGA image into a file
+//
+// Returns:
+//  0: Success
+//  1: File open failure
+//  2: File write failure
 int tga_write_file(TgaImage *tga, const char *filename);
 
 // Sets a pixel to color
