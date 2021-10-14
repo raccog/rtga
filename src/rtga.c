@@ -101,12 +101,13 @@ int tga_read_file(TgaImage *tga, const char *filename) {
 int tga_write_file(TgaImage *tga, const char *filename) {
     uint8_t header_bytes[HEADER_SIZE];
     FILE *fp;
+    size_t bytes_written;
 
     assert(tga);
 
     // Open file
     fp = fopen(filename, "wb");
-    assert(fp);
+    if (!fp) return 1;
 
     // Convert header into byte array
     // (Hopefully I can find a better method than this monstrosity...)
@@ -125,20 +126,24 @@ int tga_write_file(TgaImage *tga, const char *filename) {
     memcpy(&header_bytes[17], &header.descriptor, 1);
 
     // Write header to file
-    fwrite(header_bytes, HEADER_SIZE, 1, fp);
+    bytes_written = fwrite(header_bytes, HEADER_SIZE, 1, fp);
+    if (bytes_written != HEADER_SIZE) return 2;
     
     // Write image id to file if it exists
     if (tga->header.id_length > 0) {
-        fwrite(tga->image_id, 1, tga->header.id_length, fp);
+        bytes_written = fwrite(tga->image_id, 1, tga->header.id_length, fp);
+        if (bytes_written != tga->header.id_length) return 2;
     }
 
     // Write color map to file if it exists
     if (tga->header.color_map_length > 0) {
-        fwrite(tga->color_map_data, 1, tga->header.color_map_length, fp);
+        bytes_written = fwrite(tga->color_map_data, 1, tga->header.color_map_length, fp);
+        if (bytes_written != tga->header.color_map_length) return 2;
     }
 
     // Write image data to file
-    fwrite(tga->image_data, 1, tga_image_size(&tga->header), fp);
+    bytes_written = fwrite(tga->image_data, 1, tga_image_size(&tga->header), fp);
+    if (bytes_written != tga_image_size(&tga->header)) return 2;
 
     // Close file
     fclose(fp);
