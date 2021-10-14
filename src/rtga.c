@@ -41,6 +41,8 @@ void tga_free(TgaImage *tga) {
 }
 
 int tga_read_file(TgaImage *tga, const char *filename) {
+    assert(tga);
+
     // Open file
     FILE *fp = fopen(filename, "rb");
     assert(fp);
@@ -87,6 +89,8 @@ int tga_read_file(TgaImage *tga, const char *filename) {
 }
 
 int tga_write_file(TgaImage *tga, const char *filename) {
+    assert(tga);
+
     // Open file
     FILE *fp = fopen(filename, "wb");
     assert(fp);
@@ -131,12 +135,16 @@ int tga_write_file(TgaImage *tga, const char *filename) {
 }
 
 void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, const uint8_t *color) {
+    assert(tga);
+
     const uint8_t pixel_size = tga_pixel_size(&tga->header);
     const size_t index = (y * tga->header.width + x) * pixel_size;
     memcpy(tga->image_data + index, color, pixel_size);
 }
 
 uint8_t tga_pixel_size(const TgaHeader *header) {
+    assert(header);
+
     uint8_t pixel_size = header->image_pixel_depth / 8;
     if (header->image_pixel_depth % 8 > 0) {
         ++pixel_size;
@@ -145,5 +153,7 @@ uint8_t tga_pixel_size(const TgaHeader *header) {
 }
 
 size_t tga_image_size(const TgaHeader *header) {
+    assert(header);
+
     return header->width * header->height * tga_pixel_size(header);
 }
