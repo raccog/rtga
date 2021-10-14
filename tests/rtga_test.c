@@ -12,7 +12,7 @@
 void print_tga_image_header(TgaImage *tga) {
     assert(tga);
     TgaHeader *header = &tga->header;
-    printf("ID Length: %u\nColor Map Exists: %u\nImage Type: %u\nColor Map First Index: %u\nColor Map Length: %u\nColor Map Pixel Depth: %u\nImage X Origin: %u\nImage Y Origin %u\nImage Width: %u\nImage Height: %u\nImage Pixel Depth: %u\nImage Descriptor: %u\n", header->id_length, header->color_map_type, header->image_type, header->color_map_spec.first_index, header->color_map_spec.length, header->color_map_spec.pixel_depth, header->image_spec.x_origin, header->image_spec.y_origin, header->image_spec.width, header->image_spec.height, header->image_spec.pixel_depth, header->image_spec.descriptor);
+    printf("ID Length: %u\nColor Map Exists: %u\nImage Type: %u\nColor Map First Index: %u\nColor Map Length: %u\nColor Map Pixel Depth: %u\nImage X Origin: %u\nImage Y Origin %u\nImage Width: %u\nImage Height: %u\nImage Pixel Depth: %u\nImage Descriptor: %u\n", header->id_length, header->color_map_type, header->image_type, header->color_map_first_index, header->color_map_length, header->color_map_pixel_depth, header->x_origin, header->y_origin, header->width, header->height, header->image_pixel_depth, header->descriptor);
 }
 
 /*
@@ -44,19 +44,17 @@ int main(void) {
     header.image_type = UNCOMPRESSED_TRUE_COLOR_IMAGE;
 
     // Set color map specifications
-    TgaColorMapSpec *color_map_spec = &header.color_map_spec;
-    color_map_spec->first_index = 0;
-    color_map_spec->length = 0;
-    color_map_spec->pixel_depth = 0;
+    header.color_map_first_index = 0;
+    header.color_map_length = 0;
+    header.color_map_pixel_depth = 0;
 
     // Set image specifications
-    TgaImageSpec *image_spec = &header.image_spec;
-    image_spec->x_origin = 0;
-    image_spec->y_origin = 0;
-    image_spec->width = 10;
-    image_spec->height = 10;
-    image_spec->pixel_depth = 24;
-    image_spec->descriptor = 0;
+    header.x_origin = 0;
+    header.y_origin = 0;
+    header.width = 10;
+    header.height = 10;
+    header.image_pixel_depth = 24;
+    header.descriptor = 0;
 
     // Allocate blank image, print out the header, and then write to file
     tga_init_blank(&tga, header);

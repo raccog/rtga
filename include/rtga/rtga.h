@@ -14,30 +14,20 @@ typedef enum {
     RUN_LENGTH_ENCODED_BLACK_AND_WHITE_IMAGE = 11,
 } TgaImageType;
 
-// Color map specification
-typedef struct {
-    uint16_t first_index;
-    uint16_t length;
-    uint8_t pixel_depth;
-} TgaColorMapSpec;
-
-// Image specification
-typedef struct {
-    uint16_t x_origin;
-    uint16_t y_origin;
-    uint16_t width;
-    uint16_t height;
-    uint8_t pixel_depth;
-    uint8_t descriptor;
-} TgaImageSpec;
-
 // TGA image header
 typedef struct {
     uint8_t id_length;
     bool color_map_type;
     TgaImageType image_type;
-    TgaColorMapSpec color_map_spec;
-    TgaImageSpec image_spec;
+    uint16_t color_map_first_index;
+    uint16_t color_map_length;
+    uint8_t color_map_pixel_depth;
+    uint16_t x_origin;
+    uint16_t y_origin;
+    uint16_t width;
+    uint16_t height;
+    uint8_t image_pixel_depth;
+    uint8_t descriptor;
 } TgaHeader;
 
 // TGA image

@@ -13,8 +13,8 @@ void tga_init_blank(TgaImage *tga, TgaHeader header) {
     }
 
     // Allocate color map data if it exists
-    if (header.color_map_spec.length > 0) {
-        tga->color_map_data = malloc(header.color_map_spec.length);
+    if (header.color_map_length > 0) {
+        tga->color_map_data = malloc(header.color_map_length);
     }
     
     // Allocate image data
@@ -52,15 +52,15 @@ void tga_read_file(TgaImage *tga, const char *filename) {
     memcpy(&header.id_length, &header_bytes[0], 1);
     memcpy(&header.color_map_type, &header_bytes[1], 1);
     memcpy(&header.image_type, &header_bytes[2], 1);
-    memcpy(&header.color_map_spec.first_index, &header_bytes[3], 2);
-    memcpy(&header.color_map_spec.length, &header_bytes[5], 2);
-    memcpy(&header.color_map_spec.pixel_depth, &header_bytes[7], 1);
-    memcpy(&header.image_spec.x_origin, &header_bytes[8], 2);
-    memcpy(&header.image_spec.y_origin, &header_bytes[10], 2);
-    memcpy(&header.image_spec.width, &header_bytes[12], 2);
-    memcpy(&header.image_spec.height, &header_bytes[14], 2);
-    memcpy(&header.image_spec.pixel_depth, &header_bytes[16], 1);
-    memcpy(&header.image_spec.descriptor, &header_bytes[17], 1);
+    memcpy(&header.color_map_first_index, &header_bytes[3], 2);
+    memcpy(&header.color_map_length, &header_bytes[5], 2);
+    memcpy(&header.color_map_pixel_depth, &header_bytes[7], 1);
+    memcpy(&header.x_origin, &header_bytes[8], 2);
+    memcpy(&header.y_origin, &header_bytes[10], 2);
+    memcpy(&header.width, &header_bytes[12], 2);
+    memcpy(&header.height, &header_bytes[14], 2);
+    memcpy(&header.image_pixel_depth, &header_bytes[16], 1);
+    memcpy(&header.descriptor, &header_bytes[17], 1);
 
     // Allocate TGA image
     tga_init_blank(tga, header);
@@ -71,8 +71,8 @@ void tga_read_file(TgaImage *tga, const char *filename) {
     }
 
     // Write color map to file if it exists
-    if (tga->header.color_map_spec.length > 0) {
-        fread(tga->color_map_data, 1, tga->header.color_map_spec.length, fp);
+    if (tga->header.color_map_length > 0) {
+        fread(tga->color_map_data, 1, tga->header.color_map_length, fp);
     }
 
     // Write image data to file
@@ -94,15 +94,15 @@ void tga_write_file(TgaImage *tga, const char *filename) {
     memcpy(&header_bytes[0], &header.id_length, 1);
     memcpy(&header_bytes[1], &header.color_map_type, 1);
     memcpy(&header_bytes[2], &header.image_type, 1);
-    memcpy(&header_bytes[3], &header.color_map_spec.first_index, 2);
-    memcpy(&header_bytes[5], &header.color_map_spec.length, 2);
-    memcpy(&header_bytes[7], &header.color_map_spec.pixel_depth, 1);
-    memcpy(&header_bytes[8], &header.image_spec.x_origin, 2);
-    memcpy(&header_bytes[10], &header.image_spec.y_origin, 2);
-    memcpy(&header_bytes[12], &header.image_spec.width, 2);
-    memcpy(&header_bytes[14], &header.image_spec.height, 2);
-    memcpy(&header_bytes[16], &header.image_spec.pixel_depth, 1);
-    memcpy(&header_bytes[17], &header.image_spec.descriptor, 1);
+    memcpy(&header_bytes[3], &header.color_map_first_index, 2);
+    memcpy(&header_bytes[5], &header.color_map_length, 2);
+    memcpy(&header_bytes[7], &header.color_map_pixel_depth, 1);
+    memcpy(&header_bytes[8], &header.x_origin, 2);
+    memcpy(&header_bytes[10], &header.y_origin, 2);
+    memcpy(&header_bytes[12], &header.width, 2);
+    memcpy(&header_bytes[14], &header.height, 2);
+    memcpy(&header_bytes[16], &header.image_pixel_depth, 1);
+    memcpy(&header_bytes[17], &header.descriptor, 1);
 
     // Write header to file
     fwrite(header_bytes, 18, 1, fp);
@@ -113,8 +113,8 @@ void tga_write_file(TgaImage *tga, const char *filename) {
     }
 
     // Write color map to file if it exists
-    if (tga->header.color_map_spec.length > 0) {
-        fwrite(tga->color_map_data, 1, tga->header.color_map_spec.length, fp);
+    if (tga->header.color_map_length > 0) {
+        fwrite(tga->color_map_data, 1, tga->header.color_map_length, fp);
     }
 
     // Write image data to file
@@ -126,18 +126,18 @@ void tga_write_file(TgaImage *tga, const char *filename) {
 
 void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, const uint8_t *color) {
     const uint8_t pixel_size = tga_pixel_size(&tga->header);
-    const size_t index = (y * tga->header.image_spec.width + x) * pixel_size;
+    const size_t index = (y * tga->header.width + x) * pixel_size;
     memcpy(tga->image_data + index, color, pixel_size);
 }
 
 uint8_t tga_pixel_size(const TgaHeader *header) {
-    uint8_t pixel_size = header->image_spec.pixel_depth / 8;
-    if (header->image_spec.pixel_depth % 8 > 0) {
+    uint8_t pixel_size = header->image_pixel_depth / 8;
+    if (header->image_pixel_depth % 8 > 0) {
         ++pixel_size;
     }
     return pixel_size;
 }
 
 size_t tga_image_size(const TgaHeader *header) {
-    return header->image_spec.width * header->image_spec.height * tga_pixel_size(header);
+    return header->width * header->height * tga_pixel_size(header);
 }
