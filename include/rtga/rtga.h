@@ -40,7 +40,7 @@ typedef struct {
 
 // Allocates memory for a blank TGA image in memory using the 
 // specifications from header.
-int tga_init_blank(TgaImage *tga, TgaHeader header);
+int tga_alloc(TgaImage *tga, TgaHeader header);
 
 // Frees allocated memory for a TGA image.
 void tga_free(TgaImage *tga);

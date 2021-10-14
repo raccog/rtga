@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-int tga_init_blank(TgaImage *tga, TgaHeader header) {
+int tga_alloc(TgaImage *tga, TgaHeader header) {
     assert(tga);
 
     // Allocate image id if it exists
@@ -67,7 +67,7 @@ int tga_read_file(TgaImage *tga, const char *filename) {
     memcpy(&header.descriptor, &header_bytes[17], 1);
 
     // Allocate TGA image
-    tga_init_blank(tga, header);
+    tga_alloc(tga, header);
 
     // Read image id from file if it exists
     if (tga->header.id_length > 0) {

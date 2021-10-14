@@ -57,7 +57,7 @@ int main(void) {
     header.descriptor = 0;
 
     // Allocate blank image, print out the header, and then write to file
-    tga_init_blank(&tga, header);
+    tga_alloc(&tga, header);
     printf("Image Before Read:\n");
     print_tga_image_header(&tga);
     printf("\n");
