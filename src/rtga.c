@@ -44,15 +44,19 @@ void tga_free(TgaImage *tga) {
 }
 
 int tga_read_file(TgaImage *tga, const char *filename) {
+    uint8_t header_bytes[HEADER_SIZE];
+    FILE *fp;
+    size_t bytes_read;
+
     assert(tga);
 
     // Open file
-    FILE *fp = fopen(filename, "rb");
-    assert(fp);
+    fp = fopen(filename, "rb");
+    if (!fp) return 1;
 
     // Read header from file
-    uint8_t header_bytes[18];
-    fread(&header_bytes[0], 1, 18, fp);
+    bytes_read = fread(&header_bytes[0], 1, HEADER_SIZE, fp);
+    if (bytes_read != HEADER_SIZE) return 2;
 
     // Convert header into struct instance
     TgaHeader header;
@@ -70,20 +74,23 @@ int tga_read_file(TgaImage *tga, const char *filename) {
     memcpy(&header.descriptor, &header_bytes[17], 1);
 
     // Allocate TGA image
-    tga_alloc(tga, header);
+    if (tga_alloc(tga, header) != 0) return 3;
 
     // Read image id from file if it exists
     if (tga->header.id_length > 0) {
-        fread(&tga->image_id, 1, tga->header.id_length, fp);
+        bytes_read = fread(&tga->image_id, 1, tga->header.id_length, fp);
+        if (bytes_read != HEADER_SIZE) return 2;
     }
 
     // Write color map to file if it exists
     if (tga->header.color_map_length > 0) {
-        fread(tga->color_map_data, 1, tga->header.color_map_length, fp);
+        bytes_read = fread(tga->color_map_data, 1, tga->header.color_map_length, fp);
+        if (bytes_read != HEADER_SIZE) return 2;
     }
 
     // Write image data to file
-    fread(tga->image_data, 1, tga_image_size(&tga->header), fp);
+    bytes_read = fread(tga->image_data, 1, tga_image_size(&tga->header), fp);
+    if (bytes_read != HEADER_SIZE) return 2;
 
     // Close file
     fclose(fp);
@@ -92,16 +99,18 @@ int tga_read_file(TgaImage *tga, const char *filename) {
 }
 
 int tga_write_file(TgaImage *tga, const char *filename) {
+    uint8_t header_bytes[HEADER_SIZE];
+    FILE *fp;
+
     assert(tga);
 
     // Open file
-    FILE *fp = fopen(filename, "wb");
+    fp = fopen(filename, "wb");
     assert(fp);
 
     // Convert header into byte array
     // (Hopefully I can find a better method than this monstrosity...)
     TgaHeader header = tga->header;
-    uint8_t header_bytes[18];
     memcpy(&header_bytes[0], &header.id_length, 1);
     memcpy(&header_bytes[1], &header.color_map_type, 1);
     memcpy(&header_bytes[2], &header.image_type, 1);
@@ -116,7 +125,7 @@ int tga_write_file(TgaImage *tga, const char *filename) {
     memcpy(&header_bytes[17], &header.descriptor, 1);
 
     // Write header to file
-    fwrite(header_bytes, 18, 1, fp);
+    fwrite(header_bytes, HEADER_SIZE, 1, fp);
     
     // Write image id to file if it exists
     if (tga->header.id_length > 0) {
@@ -140,8 +149,8 @@ int tga_write_file(TgaImage *tga, const char *filename) {
 void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, const uint8_t *color) {
     assert(tga);
 
-    const uint8_t pixel_size = tga_pixel_size(&tga->header);
-    const size_t index = (y * tga->header.width + x) * pixel_size;
+    uint8_t pixel_size = tga_pixel_size(&tga->header);
+    size_t index = (y * tga->header.width + x) * pixel_size;
     memcpy(tga->image_data + index, color, pixel_size);
 }
 

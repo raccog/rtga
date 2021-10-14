@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#define HEADER_SIZE 18
+
 // Image data representations 
 typedef enum {
     NO_IMAGE = 0,
