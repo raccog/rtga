@@ -162,11 +162,7 @@ void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, const uint8_t *color) 
 uint8_t tga_pixel_size(const TgaHeader *header) {
     assert(header);
 
-    uint8_t pixel_size = header->image_pixel_depth / 8;
-    if (header->image_pixel_depth % 8 > 0) {
-        ++pixel_size;
-    }
-    return pixel_size;
+    return header->image_pixel_depth / 8;
 }
 
 size_t tga_image_size(const TgaHeader *header) {
