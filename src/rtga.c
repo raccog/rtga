@@ -4,6 +4,22 @@
 #include <stdio.h>
 #include <string.h>
 
+const uint8_t _WHITE[] = {255};
+const uint8_t *WHITE = &_WHITE[0];
+const uint8_t _LIGHT_GRAY[] = {192};
+const uint8_t *LIGHT_GRAY = &_LIGHT_GRAY[0];
+const uint8_t _GRAY[] = {128};
+const uint8_t *GRAY = &_GRAY[0];
+const uint8_t _DARK_GRAY[] = {64};
+const uint8_t *DARK_GRAY = &_DARK_GRAY[0];
+const uint8_t _BLACK[] = {0};
+const uint8_t *BLACK = &_BLACK[0];
+
+const uint8_t _BLUE[] = {255, 0, 0};
+const uint8_t *BLUE = &_BLUE[0];
+const uint8_t _GREEN[] = {0, 255, 0};
+const uint8_t *GREEN = &_GREEN[0];
+
 int tga_alloc(TgaImage *tga, TgaHeader header) {
     assert(tga);
 

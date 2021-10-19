@@ -14,11 +14,27 @@
 #define TGA_FILE_READ_ERROR 3
 #define TGA_FILE_WRITE_ERROR 4
 
+//
+// Colors
+//
+
+// 8-bit Greyscale Values (G)
+const uint8_t *WHITE;
+const uint8_t *LIGHT_GRAY;
+const uint8_t *GRAY;
+const uint8_t *DARK_GRAY;
+const uint8_t *BLACK;
+
+// 24-bit Color Values (BGR)
+const uint8_t *BLUE;
+const uint8_t *GREEN;
+
 // Image data representations 
 typedef enum {
     NO_IMAGE = 0,
     UNCOMPRESSED_COLOR_MAPPED_IMAGE = 1,
     UNCOMPRESSED_TRUE_COLOR_IMAGE = 2,
+    UNCOMPRESSED_BLACK_AND_WHITE_IMAGE = 3,
     RUN_LENGTH_ENCODED_COLOR_MAPPED_IMAGE = 9,
     RUN_LENGTH_ENCODED_BLACK_AND_WHITE_IMAGE = 11,
 } TgaImageType;

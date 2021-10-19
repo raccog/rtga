@@ -26,6 +26,10 @@ int main(void) {
     TgaHeader header;
     int success;
 
+    // File names
+    const char *UC_24B_FILENAME = "color24.tga";
+    const char *UC_8B_FILENAME = "color8.tga";
+
     // Set initial header values
     header.id_length = 0;
     header.color_map_type = false;
@@ -48,15 +52,34 @@ int main(void) {
     if (tga_alloc(&tga, header) != TGA_SUCCESS) {
         printf("Memory allocation error on line %u\n", __LINE__);
     }
-    const uint8_t BLUE[] = {255, 0, 0};
-    tga_set_pixel(&tga, 0, 0, &BLUE[0]);
-    success = tga_write_file(&tga, "test.tga");
+    tga_set_pixel(&tga, 0, 0, BLUE);
+    tga_set_pixel(&tga, 1, 1, GREEN);
+    success = tga_write_file(&tga, UC_24B_FILENAME);
     if (success == TGA_FILE_OPEN_ERROR) {
         printf("File opening error\n");
     } else if (success == TGA_FILE_WRITE_ERROR) {
         printf("File write error\n");
     } else {
-        printf("Wrote %s with Width{%u},Height{%u},Depth{%u}\n", "test.tga", 
+        printf("Wrote %s with Width{%u},Height{%u},Depth{%u}\n", UC_24B_FILENAME, 
+        header.width, header.height, header.image_pixel_depth);
+    }
+    tga_free(&tga);
+
+    // Write a grayscale image
+    header.image_type = UNCOMPRESSED_BLACK_AND_WHITE_IMAGE;
+    header.image_pixel_depth = 8;
+    if (tga_alloc(&tga, header) != TGA_SUCCESS) {
+        printf("Memory allocation error on line %u\n", __LINE__);
+    }
+    tga_set_pixel(&tga, 0, 0, GRAY);
+    tga_set_pixel(&tga, 1, 1, LIGHT_GRAY);
+    success = tga_write_file(&tga, UC_8B_FILENAME);
+    if (success == TGA_FILE_OPEN_ERROR) {
+        printf("File opening error\n");
+    } else if (success == TGA_FILE_WRITE_ERROR) {
+        printf("File write error\n");
+    } else {
+        printf("Wrote %s with Width{%u},Height{%u},Depth{%u}\n", UC_8B_FILENAME, 
         header.width, header.height, header.image_pixel_depth);
     }
     tga_free(&tga);
