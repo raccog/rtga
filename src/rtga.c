@@ -126,7 +126,7 @@ int tga_write_file(TgaImage *tga, const char *filename) {
     memcpy(&header_bytes[17], &header.descriptor, 1);
 
     // Write header to file
-    bytes_written = fwrite(header_bytes, HEADER_SIZE, 1, fp);
+    bytes_written = fwrite(header_bytes, 1, HEADER_SIZE, fp);
     if (bytes_written != HEADER_SIZE) return 2;
     
     // Write image id to file if it exists
