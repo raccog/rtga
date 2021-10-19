@@ -96,6 +96,12 @@ int tga_write_file(TgaImage *tga, const char *filename);
 // The length of color should match the pixel depth of the image.
 void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, const uint8_t *color);
 
+
+// Sets every pixel in the image to color.
+//
+// The length of color should match the pixel depth of the image.
+void tga_fill(TgaImage *tga, const uint8_t *color);
+
 // Returns the size of each pixel in bytes.
 //
 // If the bit depth of a pixel is not divisible by 8, extra blank bits

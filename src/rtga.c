@@ -175,6 +175,16 @@ void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, const uint8_t *color) 
     memcpy(tga->image_data + index, color, pixel_size);
 }
 
+void tga_fill(TgaImage *tga, const uint8_t *color) {
+    assert(tga);
+
+    for (uint16_t y = 0; y < tga->header.height; ++y) {
+        for (uint16_t x = 0; x < tga->header.width; ++x) {
+            tga_set_pixel(tga, x, y, color);
+        }
+    }
+}
+
 uint8_t tga_pixel_size(const TgaHeader *header) {
     assert(header);
 
