@@ -7,6 +7,13 @@
 
 #define HEADER_SIZE 18
 
+// Return codes
+#define TGA_SUCCESS 0
+#define TGA_ALLOCATION_ERROR 1
+#define TGA_FILE_OPEN_ERROR 2
+#define TGA_FILE_READ_ERROR 3
+#define TGA_FILE_WRITE_ERROR 4
+
 // Image data representations 
 typedef enum {
     NO_IMAGE = 0,
@@ -44,8 +51,8 @@ typedef struct {
 // specifications from header.
 //
 // Returns:
-//  0: Success
-//  1: Memory allocation failure
+//  TGA_SUCCESS,
+//  TGA_ALLOCATION_ERROR
 int tga_alloc(TgaImage *tga, TgaHeader header);
 
 // Frees allocated memory for a TGA image.
@@ -54,18 +61,18 @@ void tga_free(TgaImage *tga);
 // Reads s TGA image from a file
 //
 // Returns:
-//  0: Success
-//  1: File open failure
-//  2: File read failure
-//  3: Memory allocation failure
+//  TGA_SUCCESS,
+//  TGA_ALLOCATION_ERROR,
+//  TGA_FILE_OPEN_ERROR,
+//  TGA_FILE_READ_ERROR
 int tga_read_file(TgaImage *tga, const char *filename);
 
 // Writes a TGA image into a file
 //
 // Returns:
-//  0: Success
-//  1: File open failure
-//  2: File write failure
+//  TGA_SUCCESS,
+//  TGA_FILE_OPEN_ERROR,
+//  TGA_FILE_WRITE_ERROR
 int tga_write_file(TgaImage *tga, const char *filename);
 
 // Sets a pixel to color
