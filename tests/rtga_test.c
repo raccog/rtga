@@ -1,19 +1,6 @@
-#include <assert.h>
 #include <stdio.h>
 
 #include "rtga/rtga.h"
-
-/*
- *  Print TGA image header
- *
- *  Prints out each field of a TGA image header.
- *
- */
-void print_tga_image_header(TgaImage *tga) {
-    assert(tga);
-    TgaHeader *header = &tga->header;
-    printf("ID Length: %u\nColor Map Exists: %u\nImage Type: %u\nColor Map First Index: %u\nColor Map Length: %u\nColor Map Pixel Depth: %u\nImage X Origin: %u\nImage Y Origin %u\nImage Width: %u\nImage Height: %u\nImage Pixel Depth: %u\nImage Descriptor: %u\n", header->id_length, header->color_map_type, header->image_type, header->color_map_first_index, header->color_map_length, header->color_map_pixel_depth, header->x_origin, header->y_origin, header->width, header->height, header->image_pixel_depth, header->descriptor);
-}
 
 /*
  *  RTGA Test
@@ -37,6 +24,7 @@ void print_tga_image_header(TgaImage *tga) {
 int main(void) {
     TgaImage tga;
     TgaHeader header;
+    int success;
 
     // Set initial header values
     header.id_length = 0;
@@ -57,18 +45,19 @@ int main(void) {
     header.descriptor = 0;
 
     // Allocate blank image, print out the header, and then write to file
-    tga_alloc(&tga, header);
-    printf("Image Before Read:\n");
-    print_tga_image_header(&tga);
-    printf("\n");
+    if (tga_alloc(&tga, header) != TGA_SUCCESS) {
+        printf("Memory allocation error on line %u\n", __LINE__);
+    }
     const uint8_t BLUE[] = {255, 0, 0};
     tga_set_pixel(&tga, 0, 0, &BLUE[0]);
-    tga_write_file(&tga, "test.tga");
-    tga_free(&tga);
-
-    // Read image from file and print out the header
-    tga_read_file(&tga, "test.tga");
-    printf("Image After Read:\n");
-    print_tga_image_header(&tga);
+    success = tga_write_file(&tga, "test.tga");
+    if (success == TGA_FILE_OPEN_ERROR) {
+        printf("File opening error\n");
+    } else if (success == TGA_FILE_WRITE_ERROR) {
+        printf("File write error\n");
+    } else {
+        printf("Wrote %s with Width{%u},Height{%u},Depth{%u}\n", "test.tga", 
+        header.width, header.height, header.image_pixel_depth);
+    }
     tga_free(&tga);
 }
