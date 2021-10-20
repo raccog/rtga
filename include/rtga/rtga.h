@@ -18,16 +18,25 @@
 // Colors
 //
 
+// Color values
+typedef struct {
+    uint8_t bgra[4];
+    uint8_t bit_size;
+} TgaColor;
+
 // 8-bit Greyscale Values (G)
-const uint8_t *WHITE;
-const uint8_t *LIGHT_GRAY;
-const uint8_t *GRAY;
-const uint8_t *DARK_GRAY;
-const uint8_t *BLACK;
+const TgaColor WHITE8;
+const TgaColor LIGHT_GRAY8;
+const TgaColor GRAY8;
+const TgaColor DARK_GRAY8;
+const TgaColor BLACK8;
 
 // 24-bit Color Values (BGR)
-const uint8_t *BLUE;
-const uint8_t *GREEN;
+const TgaColor BLUE24;
+const TgaColor GREEN24;
+const TgaColor RED24;
+const TgaColor WHITE24;
+const TgaColor BLACK24;
 
 // Image data representations 
 typedef enum {
@@ -94,13 +103,13 @@ int tga_write_file(TgaImage *tga, const char *filename);
 // Sets a pixel to color
 //
 // The length of color should match the pixel depth of the image.
-void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, const uint8_t *color);
+void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, TgaColor color);
 
 
 // Sets every pixel in the image to color.
 //
 // The length of color should match the pixel depth of the image.
-void tga_fill(TgaImage *tga, const uint8_t *color);
+void tga_fill(TgaImage *tga, TgaColor color);
 
 // Returns the size of each pixel in bytes.
 //

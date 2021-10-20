@@ -4,21 +4,19 @@
 #include <stdio.h>
 #include <string.h>
 
-const uint8_t _WHITE[] = {255};
-const uint8_t *WHITE = &_WHITE[0];
-const uint8_t _LIGHT_GRAY[] = {192};
-const uint8_t *LIGHT_GRAY = &_LIGHT_GRAY[0];
-const uint8_t _GRAY[] = {128};
-const uint8_t *GRAY = &_GRAY[0];
-const uint8_t _DARK_GRAY[] = {64};
-const uint8_t *DARK_GRAY = &_DARK_GRAY[0];
-const uint8_t _BLACK[] = {0};
-const uint8_t *BLACK = &_BLACK[0];
+// 8-bit Greyscale Values (G)
+const TgaColor WHITE8 = {{255, 0, 0, 0}, 8};
+const TgaColor LIGHT_GRAY8 = {{196, 0, 0, 0}, 8};
+const TgaColor GRAY8 = {{128, 0, 0, 0}, 8};
+const TgaColor DARK_GRAY8 = {{64, 0, 0, 0}, 8};
+const TgaColor BLACK8 = {{0, 0, 0, 0}, 8};
 
-const uint8_t _BLUE[] = {255, 0, 0};
-const uint8_t *BLUE = &_BLUE[0];
-const uint8_t _GREEN[] = {0, 255, 0};
-const uint8_t *GREEN = &_GREEN[0];
+// 24-bit Color Values (BGR)
+const TgaColor BLUE24 = {{255, 0, 0, 0}, 24};
+const TgaColor GREEN24 = {{0, 255, 0, 0}, 24};
+const TgaColor RED24 = {{0, 0, 255, 0}, 24};
+const TgaColor WHITE24 = {{255, 255, 255, 0}, 24};
+const TgaColor BLACK24 = {{0, 0, 0, 0}, 24};
 
 int tga_alloc(TgaImage *tga, TgaHeader header) {
     assert(tga);
@@ -167,15 +165,17 @@ int tga_write_file(TgaImage *tga, const char *filename) {
     return TGA_SUCCESS;
 }
 
-void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, const uint8_t *color) {
+void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, TgaColor color) {
     assert(tga);
 
     uint8_t pixel_size = tga_pixel_size(&tga->header);
     size_t index = (y * tga->header.width + x) * pixel_size;
-    memcpy(tga->image_data + index, color, pixel_size);
+    
+    assert(pixel_size == color.bit_size / 8);
+    memcpy(tga->image_data + index, color.bgra, pixel_size);
 }
 
-void tga_fill(TgaImage *tga, const uint8_t *color) {
+void tga_fill(TgaImage *tga, TgaColor color) {
     assert(tga);
 
     for (uint16_t y = 0; y < tga->header.height; ++y) {
