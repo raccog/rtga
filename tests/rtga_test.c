@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "rtga/rtga.h"
+#include "rtga/rtga_version.h"
 
 /*
  *  RTGA Test
@@ -31,6 +32,9 @@ int main(void) {
     const char *UC_8B_FILENAME = "color8.tga";
     const char *UC_24B_GRADIENT_FILENAME = "color24_gradient.tga";
     const char *UC_8B_GRADIENT_FILENAME = "color8_gradient.tga";
+
+    // Print package version
+    printf("rtga version: %s\n", RTGA_VERSION);
 
     // Set initial header values
     header.id_length = 0;

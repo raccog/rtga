@@ -23,11 +23,14 @@ endif()
 # Get package version
 include(${PROJECT_SOURCE_DIR}/cmake/package_version.cmake)
 
-# Source file and header file for rtga library
-add_library(rtga src/rtga.c include/rtga/rtga.h)
+# Create version header
+configure_file(include/rtga/rtga_version.h.in include/rtga/rtga_version.h)
 
-# Set the include directory
-target_include_directories(rtga PUBLIC include)
+# Source file and header file for rtga library
+add_library(rtga src/rtga.c ${CMAKE_SOURCE_DIR}/include/rtga/rtga.h ${CMAKE_BINARY_DIR}/include/rtga/rtga_version.h)
+
+# Set the include directories
+target_include_directories(rtga PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/include)
 
 # Set the C standard
 set_target_properties(rtga 
