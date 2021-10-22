@@ -5,7 +5,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#define HEADER_SIZE 18
+#define TGA_HEADER_SIZE 18
 
 // Return codes
 #define TGA_SUCCESS 0

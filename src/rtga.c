@@ -58,7 +58,7 @@ void tga_free(TgaImage *tga) {
 }
 
 int tga_read_file(TgaImage *tga, const char *filename) {
-    uint8_t header_bytes[HEADER_SIZE];
+    uint8_t header_bytes[TGA_HEADER_SIZE];
     FILE *fp;
     size_t bytes_read;
 
@@ -69,8 +69,8 @@ int tga_read_file(TgaImage *tga, const char *filename) {
     if (!fp) return TGA_FILE_OPEN_ERROR;
 
     // Read header from file
-    bytes_read = fread(&header_bytes[0], 1, HEADER_SIZE, fp);
-    if (bytes_read != HEADER_SIZE) return TGA_FILE_READ_ERROR;
+    bytes_read = fread(&header_bytes[0], 1, TGA_HEADER_SIZE, fp);
+    if (bytes_read != TGA_HEADER_SIZE) return TGA_FILE_READ_ERROR;
 
     // Convert header into struct instance
     TgaHeader header;
@@ -113,7 +113,7 @@ int tga_read_file(TgaImage *tga, const char *filename) {
 }
 
 int tga_write_file(TgaImage *tga, const char *filename) {
-    uint8_t header_bytes[HEADER_SIZE];
+    uint8_t header_bytes[TGA_HEADER_SIZE];
     FILE *fp;
     size_t bytes_written;
 
@@ -140,8 +140,8 @@ int tga_write_file(TgaImage *tga, const char *filename) {
     memcpy(&header_bytes[17], &header.descriptor, 1);
 
     // Write header to file
-    bytes_written = fwrite(header_bytes, 1, HEADER_SIZE, fp);
-    if (bytes_written != HEADER_SIZE) return TGA_FILE_WRITE_ERROR;
+    bytes_written = fwrite(header_bytes, 1, TGA_HEADER_SIZE, fp);
+    if (bytes_written != TGA_HEADER_SIZE) return TGA_FILE_WRITE_ERROR;
     
     // Write image id to file if it exists
     if (tga->header.id_length > 0) {
