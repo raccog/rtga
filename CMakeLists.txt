@@ -7,7 +7,7 @@ if (${CMAKE_VERSION} VERSION_LESS 3.12)
 endif()
 
 # Initialize project
-project(rtga VERSION 1.0 LANGUAGES C
+project(rtga VERSION 0.1.0 LANGUAGES C
     DESCRIPTION "A toy library for interfacing with TGA files.")
 
 # Set the default build type to Release
@@ -19,6 +19,9 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS
         "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 endif()
+
+# Get package version
+include(${PROJECT_SOURCE_DIR}/cmake/package_version.cmake)
 
 # Source file and header file for rtga library
 add_library(rtga src/rtga.c include/rtga/rtga.h)
