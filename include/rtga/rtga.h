@@ -101,25 +101,16 @@ int tga_read_file(TgaImage *tga, const char *filename);
 int tga_write_file(TgaImage *tga, const char *filename);
 
 // Sets a pixel to color
-//
-// The length of color should match the pixel depth of the image.
 void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, TgaColor color);
 
 
 // Sets every pixel in the image to color.
-//
-// The length of color should match the pixel depth of the image.
 void tga_fill(TgaImage *tga, TgaColor color);
 
 // Returns the size of each pixel in bytes.
-//
-// If the bit depth of a pixel is not divisible by 8, extra blank bits
-// will be added for allignment.
 uint8_t tga_pixel_size(const TgaHeader *header);
 
 // Returns the size of the image in bytes.
-//
-// The header is not included in this size.
 size_t tga_image_size(const TgaHeader *header);
 
 #endif
