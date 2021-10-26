@@ -83,7 +83,7 @@ int tga_alloc(TgaImage *tga, TgaHeader header);
 // Frees allocated memory for a TGA image.
 void tga_free(TgaImage *tga);
 
-// Reads s TGA image from a file
+// Reads a TGA image from a file
 //
 // Returns:
 //  TGA_SUCCESS,

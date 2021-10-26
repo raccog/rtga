@@ -53,6 +53,70 @@ TgaColor: struct {
 
 # TGA functions
 
+## tga_alloc
+Allocates memory for a blank TGA image in memory using the specifications from header.
 ```
-TODO: DOCUMENT TGA FUNCTIONS 
+// Returns:
+//  TGA_SUCCESS,
+//  TGA_ALLOCATION_ERROR
+int tga_alloc(TgaImage *tga, TgaHeader header);
+```
+
+## tga_free
+Frees allocated memory for a TGA image.
+```
+void tga_free(TgaImage *tga);
+```
+
+## tga_read_file
+Reads a TGA image from a file
+```
+// Returns:
+//  TGA_SUCCESS,
+//  TGA_ALLOCATION_ERROR,
+//  TGA_FILE_OPEN_ERROR,
+//  TGA_FILE_READ_ERROR
+int tga_read_file(TgaImage *tga, const char *filename);
+```
+
+## tga_write_file
+Writes a TGA image into a file
+```
+// Returns:
+//  TGA_SUCCESS,
+//  TGA_FILE_OPEN_ERROR,
+//  TGA_FILE_WRITE_ERROR
+int tga_write_file(TgaImage *tga, const char *filename);
+```
+
+## tga_set_pixel
+Sets a pixel to color
+
+The length of color should match the pixel depth of the image.
+```
+void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, TgaColor color);
+```
+
+## tga_fill
+Sets every pixel in the image to color.
+
+The length of color should match the pixel depth of the image.
+```
+void tga_fill(TgaImage *tga, TgaColor color);
+```
+
+## tga_pixel_size
+Returns the size of each pixel in bytes.
+
+If the bit depth of a pixel is not divisible by 8, extra blank bits will be added for allignment.
+```
+uint8_t tga_pixel_size(const TgaHeader *header);
+```
+
+## tga_image_size
+Returns the size of the image in bytes.
+
+The header is not included in this size.
+```
+size_t tga_image_size(const TgaHeader *header);
 ```
