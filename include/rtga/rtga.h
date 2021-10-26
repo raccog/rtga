@@ -48,6 +48,13 @@ typedef enum {
     RUN_LENGTH_ENCODED_BLACK_AND_WHITE_IMAGE = 11,
 } TgaImageType;
 
+// State of a TgaImage instance
+typedef enum {
+    IS_UNCOMPRESSED,
+    IS_COLOR_MAPPED,
+    IS_RLE,
+} TgaImageState;
+
 // TGA image header
 typedef struct {
     uint8_t id_length;
@@ -67,6 +74,7 @@ typedef struct {
 // TGA image
 typedef struct {
     TgaHeader header;
+    TgaImageState state;
     uint8_t *image_id;
     uint8_t *color_map_data;
     uint8_t *image_data;
@@ -103,9 +111,14 @@ int tga_write_file(TgaImage *tga, const char *filename);
 // Sets a pixel to color
 void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, TgaColor color);
 
-
 // Sets every pixel in the image to color.
 void tga_fill(TgaImage *tga, TgaColor color);
+
+// Converts instance of TgaImage from uncompressed to color mapped
+int tga_to_color_map(TgaImage *tga);
+
+// Converts instance of TgaImage from color mapped to uncompressed
+int tga_from_color_map(TgaImage *tga);
 
 // Returns the size of each pixel in bytes.
 uint8_t tga_pixel_size(const TgaHeader *header);

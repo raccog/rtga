@@ -28,7 +28,7 @@ int tga_alloc(TgaImage *tga, TgaHeader header) {
     }
 
     // Allocate color map data if it exists
-    if (header.color_map_length > 0) {
+    if (header.color_map_type && header.color_map_length > 0) {
         tga->color_map_data = malloc(header.color_map_length);
         if (!tga->color_map_data) return TGA_ALLOCATION_ERROR;
     }
@@ -39,6 +39,9 @@ int tga_alloc(TgaImage *tga, TgaHeader header) {
 
     // Set header
     tga->header = header;
+
+    // Set default image state to uncompressed
+    tga->state = IS_UNCOMPRESSED;
 
     return TGA_SUCCESS;
 }
@@ -97,7 +100,7 @@ int tga_read_file(TgaImage *tga, const char *filename) {
     }
 
     // Write color map to file if it exists
-    if (tga->header.color_map_length > 0) {
+    if (header.color_map_type && tga->header.color_map_length > 0) {
         bytes_read = fread(tga->color_map_data, 1, tga->header.color_map_length, fp);
         if (bytes_read != tga->header.color_map_length) return TGA_FILE_READ_ERROR;
     }
@@ -150,7 +153,7 @@ int tga_write_file(TgaImage *tga, const char *filename) {
     }
 
     // Write color map to file if it exists
-    if (tga->header.color_map_length > 0) {
+    if (header.color_map_type && tga->header.color_map_length > 0) {
         bytes_written = fwrite(tga->color_map_data, 1, tga->header.color_map_length, fp);
         if (bytes_written != tga->header.color_map_length) return TGA_FILE_WRITE_ERROR;
     }
@@ -170,7 +173,7 @@ void tga_set_pixel(TgaImage *tga, uint16_t x, uint16_t y, TgaColor color) {
 
     uint8_t pixel_size = tga_pixel_size(&tga->header);
     size_t index = (y * tga->header.width + x) * pixel_size;
-    
+ 
     assert(pixel_size == color.bit_size / 8);
     memcpy(tga->image_data + index, color.bgra, pixel_size);
 }
@@ -183,6 +186,14 @@ void tga_fill(TgaImage *tga, TgaColor color) {
             tga_set_pixel(tga, x, y, color);
         }
     }
+}
+
+int tga_to_color_map(TgaImage *tga) {
+    return 1;
+}
+
+int tga_from_color_map(TgaImage *tga) {
+    return 1;
 }
 
 uint8_t tga_pixel_size(const TgaHeader *header) {
