@@ -55,7 +55,7 @@ int main(void) {
     header.descriptor = 0;
 
     // Allocate blank image, print out the header, and then write to file
-    if (tga_alloc_old(&tga, header) != TGA_SUCCESS) {
+    if (tga_alloc(UNCOMPRESSED_TRUE_COLOR_IMAGE, 10, 10, 24, &tga) != TGA_SUCCESS) {
         printf("Memory allocation error on line %u\n", __LINE__);
     }
     tga_fill(&tga, BLACK24);

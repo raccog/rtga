@@ -28,6 +28,7 @@ int tga_alloc(TgaImageType image_type, uint16_t width, uint16_t height, uint8_t 
     if (tga->image_data) return TGA_ALREADY_ALLOCATED_ERROR;
 
     // Update header and state
+    memset(&tga->header, 0, sizeof(TgaHeader));
     tga->header.image_type = image_type;
     tga->header.width = width;
     tga->header.height = height;
