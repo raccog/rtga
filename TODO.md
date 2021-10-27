@@ -1,11 +1,11 @@
-# Todo List
+# Todo List for Original TGA Format
 
 * Color mapped images
 * RLE color mapped images
 * RLE true color images
 * RLE grayscale images
-* Function to set id
-* Functions for translating data to and from RLE
+* Set image id
 * Add more explicit colors
+* Add 15 and 16 bit colors
 * Better color tests
-* Alpha tests
+* Better Alpha tests
