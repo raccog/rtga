@@ -54,12 +54,15 @@ TgaColor: struct {
 # TGA functions
 
 ## tga_alloc
-Allocates memory for a blank TGA image in memory using the specifications from header.
+Allocates memory for a TGA image in memory
 ```
 // Returns:
 //  TGA_SUCCESS,
+//  TGA_NULL_PTR_ERROR,
+//  TGA_INVALID_PIXEL_DEPTH_ERROR,
+//  TGA_ALREADY_ALLOCATED_ERROR,
 //  TGA_ALLOCATION_ERROR
-int tga_alloc(TgaImage *tga, TgaHeader header);
+int tga_alloc(TgaImageType image_type, uint16_t width, uint16_t height, uint8_t pixel_depth, TgaImage *tga);
 ```
 
 ## tga_free
@@ -113,4 +116,10 @@ Returns the size of the image in bytes.
 The header is not included in this size.
 ```
 size_t tga_image_size(const TgaHeader *header);
+```
+
+## tga_valid_depth
+Returns true if pixel_depth is a valid bit depth
+```
+bool tga_valid_depth(uint8_t pixel_depth);
 ```
