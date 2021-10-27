@@ -31,6 +31,7 @@ int main(void) {
     // File names
     const char *UC_24B_FILENAME = "color24.tga";
     const char *UC_8B_FILENAME = "color8.tga";
+    const char *UC_32B_GRADIENT_FILENAME = "color32_gradient.tga";
     const char *UC_24B_GRADIENT_FILENAME = "color24_gradient.tga";
     const char *UC_8B_GRADIENT_FILENAME = "color8_gradient.tga";
 
@@ -75,14 +76,14 @@ int main(void) {
     }
     tga_free(&tga);
 
-    // Write a grayscale image gradient
+    // Write a grayscale gradient image
     width = 255;
     height = 255;
     if (tga_alloc(UNCOMPRESSED_BLACK_AND_WHITE_IMAGE, width, height, pixel_depth, &tga) != TGA_SUCCESS) {
         printf("Memory allocation error on line %u\n", __LINE__);
     }
     for (int y = 0; y < height; ++y) {
-        TgaColor gray_color = {{y, 0, 0, 0}, 8};
+        TgaColor gray_color = COLOR8(y);
         for (int x = 0; x < width; ++x) {
             tga_set_pixel(&tga, x, y, gray_color);
         }
@@ -94,6 +95,27 @@ int main(void) {
         printf("File write error\n");
     } else {
         printf("Wrote %s with Width{%u},Height{%u},Depth{%u}\n", UC_8B_GRADIENT_FILENAME, width, height, pixel_depth);
+    }
+    tga_free(&tga);
+
+    // Write a red-colored alpha gradient image
+    pixel_depth = 32;
+    if (tga_alloc(UNCOMPRESSED_TRUE_COLOR_IMAGE, width, height, pixel_depth, &tga) != TGA_SUCCESS) {
+        printf("Memory allocation error on line %u\n", __LINE__);
+    }
+    for (int y = 0; y < height; ++y) {
+        TgaColor red_alpha = COLOR32(255, 0, 0, y);
+        for (int x = 0; x < width; ++x) {
+            tga_set_pixel(&tga, x, y, red_alpha);
+        }
+    }
+    success = tga_write_file(&tga, UC_32B_GRADIENT_FILENAME);
+    if (success == TGA_FILE_OPEN_ERROR) {
+        printf("File opening error\n");
+    } else if (success == TGA_FILE_WRITE_ERROR) {
+        printf("File write error\n");
+    } else {
+        printf("Wrote %s with Width{%u},Height{%u},Depth{%u}\n", UC_32B_GRADIENT_FILENAME, width, height, pixel_depth);
     }
     tga_free(&tga);
 
