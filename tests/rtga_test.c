@@ -55,7 +55,7 @@ int main(void) {
     header.descriptor = 0;
 
     // Allocate blank image, print out the header, and then write to file
-    if (tga_alloc(&tga, header) != TGA_SUCCESS) {
+    if (tga_alloc_old(&tga, header) != TGA_SUCCESS) {
         printf("Memory allocation error on line %u\n", __LINE__);
     }
     tga_fill(&tga, BLACK24);
@@ -75,7 +75,7 @@ int main(void) {
     // Write a grayscale image
     header.image_type = UNCOMPRESSED_BLACK_AND_WHITE_IMAGE;
     header.image_pixel_depth = 8;
-    if (tga_alloc(&tga, header) != TGA_SUCCESS) {
+    if (tga_alloc_old(&tga, header) != TGA_SUCCESS) {
         printf("Memory allocation error on line %u\n", __LINE__);
     }
     tga_fill(&tga, BLACK8);
@@ -95,7 +95,7 @@ int main(void) {
     // Write a grayscale image gradient
     header.width = 255;
     header.height = 255;
-    if (tga_alloc(&tga, header) != TGA_SUCCESS) {
+    if (tga_alloc_old(&tga, header) != TGA_SUCCESS) {
         printf("Memory allocation error on line %u\n", __LINE__);
     }
     for (int y = 0; y < header.height; ++y) {

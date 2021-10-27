@@ -18,7 +18,30 @@ const TgaColor RED24 = {{0, 0, 255}, 24};
 const TgaColor WHITE24 = {{255, 255, 255}, 24};
 const TgaColor BLACK24 = {{0, 0, 0}, 24};
 
-int tga_alloc(TgaImage *tga, TgaHeader header) {
+int tga_alloc(TgaImageType image_type, uint16_t width, uint16_t height, uint8_t pixel_depth, TgaImage *tga) {
+    assert(tga);
+    assert(tga_valid_depth(pixel_depth));
+
+    // Return error codes if arguments are invalid
+    if (!tga) return TGA_NULL_PTR_ERROR;
+    if (!tga_valid_depth(pixel_depth)) return TGA_INVALID_PIXEL_DEPTH_ERROR;
+    if (tga->image_data) return TGA_ALREADY_ALLOCATED_ERROR;
+
+    // Update header and state
+    tga->header.image_type = image_type;
+    tga->header.width = width;
+    tga->header.height = height;
+    tga->header.image_pixel_depth = pixel_depth;
+    tga->state = IS_UNCOMPRESSED;
+
+    // Allocate image data
+    tga->image_data = malloc(tga_image_size(&tga->header));
+    if (!tga->image_data) return TGA_ALLOCATION_ERROR;
+
+    return TGA_SUCCESS;
+}
+
+int tga_alloc_old(TgaImage *tga, TgaHeader header) {
     assert(tga);
 
     // Allocate image id if it exists
@@ -91,7 +114,7 @@ int tga_read_file(TgaImage *tga, const char *filename) {
     memcpy(&header.descriptor, &header_bytes[17], 1);
 
     // Allocate TGA image
-    if (tga_alloc(tga, header) != TGA_SUCCESS) return TGA_ALLOCATION_ERROR;
+    if (tga_alloc_old(tga, header) != TGA_SUCCESS) return TGA_ALLOCATION_ERROR;
 
     // Read image id from file if it exists
     if (tga->header.id_length > 0) {
@@ -206,4 +229,8 @@ size_t tga_image_size(const TgaHeader *header) {
     assert(header);
 
     return header->width * header->height * tga_pixel_size(header);
+}
+
+bool tga_valid_depth(uint8_t pixel_depth) {
+    return (pixel_depth % 8 == 0 && pixel_depth <= 32 || pixel_depth == 15);
 }

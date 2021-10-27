@@ -13,6 +13,9 @@
 #define TGA_FILE_OPEN_ERROR 2
 #define TGA_FILE_READ_ERROR 3
 #define TGA_FILE_WRITE_ERROR 4
+#define TGA_NULL_PTR_ERROR 5
+#define TGA_INVALID_PIXEL_DEPTH_ERROR 6
+#define TGA_ALREADY_ALLOCATED_ERROR 7
 
 //
 // Colors
@@ -80,13 +83,21 @@ typedef struct {
     uint8_t *image_data;
 } TgaImage;
 
-// Allocates memory for a blank TGA image in memory using the 
-// specifications from header.
+// Allocates memory for a blank TGA image in memory 
 //
 // Returns:
 //  TGA_SUCCESS,
+//  TGA_NULL_PTR_ERROR,
+//  TGA_INVALID_PIXEL_DEPTH_ERROR,
+//  TGA_ALREADY_ALLOCATED_ERROR,
 //  TGA_ALLOCATION_ERROR
-int tga_alloc(TgaImage *tga, TgaHeader header);
+int tga_alloc(TgaImageType image_type, uint16_t width, uint16_t height, uint8_t pixel_depth, TgaImage *tga);
+
+// Allocates memory for a blank TGA image in memory using the 
+// specifications from header.
+// 
+// Will be deprecated.
+int tga_alloc_old(TgaImage *tga, TgaHeader header);
 
 // Frees allocated memory for a TGA image.
 void tga_free(TgaImage *tga);
@@ -125,5 +136,8 @@ uint8_t tga_pixel_size(const TgaHeader *header);
 
 // Returns the size of the image in bytes.
 size_t tga_image_size(const TgaHeader *header);
+
+// Returns true if pixel_depth is a valid bit depth
+bool tga_valid_depth(uint8_t pixel_depth);
 
 #endif
