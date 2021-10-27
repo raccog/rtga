@@ -11,10 +11,10 @@ const TgaColor GRAY8 = COLOR8(128);
 const TgaColor DARK_GRAY8 = COLOR8(64);
 const TgaColor BLACK8 = COLOR8(0);
 
-// 24-bit Color Values (BGR)
-const TgaColor BLUE24 = COLOR24(255, 0, 0);
+// 24-bit Color Values (RGB)
+const TgaColor BLUE24 = COLOR24(0, 0, 255);
 const TgaColor GREEN24 = COLOR24(0, 255, 0);
-const TgaColor RED24 = COLOR24(0, 0, 255);
+const TgaColor RED24 = COLOR24(255, 0, 0);
 const TgaColor WHITE24 = COLOR24(255, 255, 255);
 const TgaColor BLACK24 = COLOR24(0, 0, 0);
 
