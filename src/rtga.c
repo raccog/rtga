@@ -42,34 +42,6 @@ int tga_alloc(TgaImageType image_type, uint16_t width, uint16_t height, uint8_t 
     return TGA_SUCCESS;
 }
 
-int tga_alloc_old(TgaImage *tga, TgaHeader header) {
-    assert(tga);
-
-    // Allocate image id if it exists
-    if (header.id_length > 0) {
-        tga->image_id = malloc(header.id_length);
-        if (!tga->image_id) return TGA_ALLOCATION_ERROR;
-    }
-
-    // Allocate color map data if it exists
-    if (header.color_map_type && header.color_map_length > 0) {
-        tga->color_map_data = malloc(header.color_map_length);
-        if (!tga->color_map_data) return TGA_ALLOCATION_ERROR;
-    }
-    
-    // Allocate image data
-    tga->image_data = malloc(tga_image_size(&tga->header));
-    if (!tga->image_data) return TGA_ALLOCATION_ERROR;
-
-    // Set header
-    tga->header = header;
-
-    // Set default image state to uncompressed
-    tga->state = IS_UNCOMPRESSED;
-
-    return TGA_SUCCESS;
-}
-
 void tga_free(TgaImage *tga) {
     assert(tga);
 
@@ -115,7 +87,7 @@ int tga_read_file(TgaImage *tga, const char *filename) {
     memcpy(&header.descriptor, &header_bytes[17], 1);
 
     // Allocate TGA image
-    if (tga_alloc_old(tga, header) != TGA_SUCCESS) return TGA_ALLOCATION_ERROR;
+    if (tga_alloc(header.image_type, header.width, header.height, header.image_pixel_depth, tga) != TGA_SUCCESS) return TGA_ALLOCATION_ERROR;
 
     // Read image id from file if it exists
     if (tga->header.id_length > 0) {

@@ -83,7 +83,7 @@ typedef struct {
     uint8_t *image_data;
 } TgaImage;
 
-// Allocates memory for a blank TGA image in memory 
+// Allocates memory for a TGA image in memory 
 //
 // Returns:
 //  TGA_SUCCESS,
@@ -92,12 +92,6 @@ typedef struct {
 //  TGA_ALREADY_ALLOCATED_ERROR,
 //  TGA_ALLOCATION_ERROR
 int tga_alloc(TgaImageType image_type, uint16_t width, uint16_t height, uint8_t pixel_depth, TgaImage *tga);
-
-// Allocates memory for a blank TGA image in memory using the 
-// specifications from header.
-// 
-// Will be deprecated.
-int tga_alloc_old(TgaImage *tga, TgaHeader header);
 
 // Frees allocated memory for a TGA image.
 void tga_free(TgaImage *tga);
