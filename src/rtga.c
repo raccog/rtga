@@ -5,18 +5,18 @@
 #include <string.h>
 
 // 8-bit Greyscale Values (G)
-const TgaColor WHITE8 = {{255}, 8};
-const TgaColor LIGHT_GRAY8 = {{196}, 8};
-const TgaColor GRAY8 = {{128}, 8};
-const TgaColor DARK_GRAY8 = {{64}, 8};
-const TgaColor BLACK8 = {{0}, 8};
+const TgaColor WHITE8 = COLOR8(255);
+const TgaColor LIGHT_GRAY8 = COLOR8(196);
+const TgaColor GRAY8 = COLOR8(128);
+const TgaColor DARK_GRAY8 = COLOR8(64);
+const TgaColor BLACK8 = COLOR8(0);
 
 // 24-bit Color Values (BGR)
-const TgaColor BLUE24 = {{255, 0, 0}, 24};
-const TgaColor GREEN24 = {{0, 255, 0}, 24};
-const TgaColor RED24 = {{0, 0, 255}, 24};
-const TgaColor WHITE24 = {{255, 255, 255}, 24};
-const TgaColor BLACK24 = {{0, 0, 0}, 24};
+const TgaColor BLUE24 = COLOR24(255, 0, 0);
+const TgaColor GREEN24 = COLOR24(0, 255, 0);
+const TgaColor RED24 = COLOR24(0, 0, 255);
+const TgaColor WHITE24 = COLOR24(255, 255, 255);
+const TgaColor BLACK24 = COLOR24(0, 0, 0);
 
 int tga_alloc(TgaImageType image_type, uint16_t width, uint16_t height, uint8_t pixel_depth, TgaImage *tga) {
     assert(tga);

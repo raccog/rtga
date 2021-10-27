@@ -27,7 +27,22 @@ typedef struct {
     uint8_t bit_size;
 } TgaColor;
 
-// 8-bit Greyscale Values (G)
+//
+// Color macros for each bit depth
+//
+
+// 8-bit Greyscale Color
+#define COLOR8(c) {{c}, 8}
+
+// TODO: 15-bit RGB Color
+// TODO: 16-bit RGB Color
+
+// 24-bit RGB Color
+#define COLOR24(r, g, b) {{b, g, r}, 24}
+// 32-bit RGBA Color
+#define COLOR32(r, g, b, a) {{b, g, r, a}, 32}
+
+// 8-bit Greyscale Values (C)
 const TgaColor WHITE8;
 const TgaColor LIGHT_GRAY8;
 const TgaColor GRAY8;
