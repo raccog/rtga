@@ -4,6 +4,62 @@
 #include "rtga/rtga_version.h"
 
 /*
+ * All filenames
+ *
+ */
+
+// Color test filenames
+#define FILENAME8 "color8.tga"
+#define FILENAME16 "color16.tga"
+#define FILENAME24 "color24.tga"
+#define FILENAME32 "color32.tga"
+
+// Gradient test filenames
+#define FILENAME8_GRADIENT "gradient8.tga"
+#define FILENAME16_GRADIENT "gradient16.tga"
+#define FILENAME24_GRADIENT "gradient24.tga"
+#define FILENAME32_GRADIENT "gradient32.tga"
+
+// Image
+TgaImage tga;
+// Image specifications
+uint16_t width, height;
+uint8_t pixel_depth;
+
+void write_file(const char *filename) {
+    int success = tga_write_file(&tga, filename);
+    if (success == TGA_FILE_OPEN_ERROR) {
+        printf("File opening error\n");
+    } else if (success == TGA_FILE_WRITE_ERROR) {
+        printf("File write error\n");
+    } else {
+        printf("Wrote %s with Width{%u},Height{%u},Depth{%u}\n", filename, width, height, pixel_depth);
+    }
+}
+
+int test_color8() {
+    width = 9;
+    height = 9;
+    pixel_depth = 8;
+    if (tga_alloc(UNCOMPRESSED_BLACK_AND_WHITE_IMAGE, width, height, pixel_depth, &tga) != TGA_SUCCESS) {
+        printf("Memory allocation error in function %s\n", __func__);
+        return 1;
+    }
+
+    // Fill with white
+    tga_fill(&tga, WHITE8);
+    tga_set_pixel(&tga, 2, 2, LIGHT_GRAY8);
+    tga_set_pixel(&tga, 4, 4, GRAY8);
+    tga_set_pixel(&tga, 6, 6, DARK_GRAY8);
+    tga_set_pixel(&tga, 8, 8, BLACK8);
+    
+    write_file(FILENAME8);
+    tga_free(&tga);
+
+    return 0;
+}
+
+/*
  *  RTGA Test
  *
  *  Initializes a black TGA image into memory, then writes that
@@ -23,6 +79,8 @@
  *
  */
 int main(void) {
+    test_color8();
+    /*
     TgaImage tga;
     int success;
     uint16_t width, height;
@@ -40,24 +98,6 @@ int main(void) {
     printf("rtga version: %s\n", RTGA_VERSION);
 
     // Allocate blank image, print out the header, and then write to file
-    width = 10;
-    height = 10;
-    pixel_depth = 24;
-    if (tga_alloc(UNCOMPRESSED_TRUE_COLOR_IMAGE, width, height, pixel_depth, &tga) != TGA_SUCCESS) {
-        printf("Memory allocation error on line %u\n", __LINE__);
-    }
-    tga_fill(&tga, BLACK24);
-    tga_set_pixel(&tga, 0, 0, BLUE24);
-    tga_set_pixel(&tga, 1, 1, GREEN24);
-    success = tga_write_file(&tga, UC_24B_FILENAME);
-    if (success == TGA_FILE_OPEN_ERROR) {
-        printf("File opening error\n");
-    } else if (success == TGA_FILE_WRITE_ERROR) {
-        printf("File write error\n");
-    } else {
-        printf("Wrote %s with Width{%u},Height{%u},Depth{%u}\n", UC_24B_FILENAME, width, height, pixel_depth);
-    }
-    tga_free(&tga);
 
     // Allocate blank image, print out the header, and then write to file
     pixel_depth = 16;
@@ -139,5 +179,5 @@ int main(void) {
         printf("Wrote %s with Width{%u},Height{%u},Depth{%u}\n", UC_32B_GRADIENT_FILENAME, width, height, pixel_depth);
     }
     tga_free(&tga);
-
+    */
 }
