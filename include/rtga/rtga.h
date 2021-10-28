@@ -21,7 +21,7 @@
 // Colors
 //
 
-// Color values
+// Color instance
 typedef struct {
     uint8_t bgra[4];
     uint8_t bit_size;

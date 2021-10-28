@@ -194,8 +194,15 @@ int tga_from_color_map(TgaImage *tga) {
 
 uint8_t tga_pixel_size(const TgaHeader *header) {
     assert(header);
+    assert(tga_valid_depth(header->image_pixel_depth));
+    
+    uint8_t pixel_size = header->image_pixel_depth / 8;
 
-    return header->image_pixel_depth / 8;
+    if (header->image_pixel_depth % 8 != 0) {
+        ++pixel_size;
+    }
+
+    return pixel_size;
 }
 
 size_t tga_image_size(const TgaHeader *header) {
