@@ -30,6 +30,7 @@ int main(void) {
 
     // File names
     const char *UC_24B_FILENAME = "color24.tga";
+    const char *UC_16B_FILENAME = "color16.tga";
     const char *UC_8B_FILENAME = "color8.tga";
     const char *UC_32B_GRADIENT_FILENAME = "color32_gradient.tga";
     const char *UC_24B_GRADIENT_FILENAME = "color24_gradient.tga";
@@ -55,6 +56,26 @@ int main(void) {
         printf("File write error\n");
     } else {
         printf("Wrote %s with Width{%u},Height{%u},Depth{%u}\n", UC_24B_FILENAME, width, height, pixel_depth);
+    }
+    tga_free(&tga);
+
+    // Allocate blank image, print out the header, and then write to file
+    pixel_depth = 16;
+    if (tga_alloc(UNCOMPRESSED_TRUE_COLOR_IMAGE, width, height, pixel_depth, &tga) != TGA_SUCCESS) {
+        printf("Memory allocation error on line %u\n", __LINE__);
+    }
+    tga_fill(&tga, WHITE16);
+    tga_set_pixel(&tga, 0, 0, BLUE16);
+    tga_set_pixel(&tga, 1, 1, GREEN16);
+    tga_set_pixel(&tga, 2, 2, RED16);
+    tga_set_pixel(&tga, 3, 3, BLACK16);
+    success = tga_write_file(&tga, UC_16B_FILENAME);
+    if (success == TGA_FILE_OPEN_ERROR) {
+        printf("File opening error\n");
+    } else if (success == TGA_FILE_WRITE_ERROR) {
+        printf("File write error\n");
+    } else {
+        printf("Wrote %s with Width{%u},Height{%u},Depth{%u}\n", UC_16B_FILENAME, width, height, pixel_depth);
     }
     tga_free(&tga);
 
