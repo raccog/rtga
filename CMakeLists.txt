@@ -7,7 +7,7 @@ if (${CMAKE_VERSION} VERSION_LESS 3.12)
 endif()
 
 # Initialize project
-project(rtga VERSION 0.1.0 LANGUAGES C
+project(rtga VERSION 0.1.2 LANGUAGES C
     DESCRIPTION "A toy library for interfacing with TGA files.")
 
 # Set the default build type to Release
