@@ -24,7 +24,7 @@ endif()
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/package_version.cmake)
 
 # Create version header
-configure_file(${CMAKE_CURRENT_LIST_DIR}/include/rtga/rtga_version.h.in include/rtga/rtga_version.h)
+configure_file(${CMAKE_CURRENT_LIST_DIR}/include/rtga/rtga_version.h.in ${CMAKE_BINARY_DIR}/include/rtga/rtga_version.h)
 
 # Source file and header file for rtga library
 add_library(rtga ${CMAKE_CURRENT_LIST_DIR}/src/rtga.c ${CMAKE_CURRENT_LIST_DIR}/include/rtga/rtga.h ${CMAKE_BINARY_DIR}/include/rtga/rtga_version.h)
