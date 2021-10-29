@@ -21,16 +21,16 @@ if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
 endif()
 
 # Get package version
-include(${PROJECT_SOURCE_DIR}/cmake/package_version.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/cmake/package_version.cmake)
 
 # Create version header
-configure_file(include/rtga/rtga_version.h.in include/rtga/rtga_version.h)
+configure_file(${CMAKE_CURRENT_LIST_DIR}/include/rtga/rtga_version.h.in include/rtga/rtga_version.h)
 
 # Source file and header file for rtga library
-add_library(rtga src/rtga.c ${CMAKE_SOURCE_DIR}/include/rtga/rtga.h ${CMAKE_BINARY_DIR}/include/rtga/rtga_version.h)
+add_library(rtga ${CMAKE_CURRENT_LIST_DIR}/src/rtga.c ${CMAKE_CURRENT_LIST_DIR}/include/rtga/rtga.h ${CMAKE_BINARY_DIR}/include/rtga/rtga_version.h)
 
 # Set the include directories
-target_include_directories(rtga PUBLIC ${CMAKE_SOURCE_DIR}/include ${CMAKE_BINARY_DIR}/include)
+target_include_directories(rtga PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include ${CMAKE_BINARY_DIR}/include)
 
 # Set the C standard
 set_target_properties(rtga 
