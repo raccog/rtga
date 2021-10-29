@@ -48,12 +48,77 @@ int test_color8() {
 
     // Fill with white
     tga_fill(&tga, WHITE8);
+    // Explicit greyscale colors
     tga_set_pixel(&tga, 2, 2, LIGHT_GRAY8);
     tga_set_pixel(&tga, 4, 4, GRAY8);
     tga_set_pixel(&tga, 6, 6, DARK_GRAY8);
     tga_set_pixel(&tga, 8, 8, BLACK8);
     
     write_file(FILENAME8);
+    tga_free(&tga);
+
+    return 0;
+}
+
+int test_color16() {
+    width = 13;
+    height = 13;
+    pixel_depth = 16;
+    if (tga_alloc(UNCOMPRESSED_TRUE_COLOR_IMAGE, width, height, pixel_depth, &tga) != TGA_SUCCESS) {
+        printf("Memory allocation error in function %s\n", __func__);
+        return 1;
+    }
+
+    // Fill with white
+    tga_fill(&tga, WHITE16);
+    // Explicit greyscale colors
+    tga_set_pixel(&tga, 1, 1, RED16);
+    tga_set_pixel(&tga, 2, 2, BLUE16);
+    tga_set_pixel(&tga, 3, 3, GREEN16);
+    tga_set_pixel(&tga, 4, 4, YELLOW16);
+    tga_set_pixel(&tga, 5, 5, MAGENTA16);
+    tga_set_pixel(&tga, 6, 6, CYAN16);
+    tga_set_pixel(&tga, 7, 7, PURPLE16);
+    tga_set_pixel(&tga, 8, 8, ROSE16);
+    tga_set_pixel(&tga, 9, 9, ORANGE16);
+    tga_set_pixel(&tga, 10, 10, LIME16);
+    tga_set_pixel(&tga, 11, 11, MINT16);
+    tga_set_pixel(&tga, 10, 10, AZURE16);
+    tga_set_pixel(&tga, 12, 12, BLACK16);
+    
+    write_file(FILENAME16);
+    tga_free(&tga);
+
+    return 0;
+}
+
+int test_color24() {
+    width = 13;
+    height = 13;
+    pixel_depth = 24;
+    if (tga_alloc(UNCOMPRESSED_TRUE_COLOR_IMAGE, width, height, pixel_depth, &tga) != TGA_SUCCESS) {
+        printf("Memory allocation error in function %s\n", __func__);
+        return 1;
+    }
+
+    // Fill with white
+    tga_fill(&tga, WHITE24);
+    // Explicit greyscale colors
+    tga_set_pixel(&tga, 1, 1, RED24);
+    tga_set_pixel(&tga, 2, 2, BLUE24);
+    tga_set_pixel(&tga, 3, 3, GREEN24);
+    tga_set_pixel(&tga, 4, 4, YELLOW24);
+    tga_set_pixel(&tga, 5, 5, MAGENTA24);
+    tga_set_pixel(&tga, 6, 6, CYAN24);
+    tga_set_pixel(&tga, 7, 7, PURPLE24);
+    tga_set_pixel(&tga, 8, 8, ROSE24);
+    tga_set_pixel(&tga, 9, 9, ORANGE24);
+    tga_set_pixel(&tga, 10, 10, LIME24);
+    tga_set_pixel(&tga, 11, 11, MINT24);
+    tga_set_pixel(&tga, 10, 10, AZURE24);
+    tga_set_pixel(&tga, 12, 12, BLACK24);
+    
+    write_file(FILENAME24);
     tga_free(&tga);
 
     return 0;
@@ -80,6 +145,8 @@ int test_color8() {
  */
 int main(void) {
     test_color8();
+    test_color16();
+    test_color24();
     /*
     TgaImage tga;
     int success;

@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-// 8-bit Greyscale Values (G)
+// 8-bit Grayscale Values (G)
 const TgaColor WHITE8 = COLOR8(255);
 const TgaColor LIGHT_GRAY8 = COLOR8(196);
 const TgaColor GRAY8 = COLOR8(128);
@@ -15,6 +15,15 @@ const TgaColor BLACK8 = COLOR8(0);
 const TgaColor RED16 = COLOR16(31, 0, 0);
 const TgaColor GREEN16 = COLOR16(0, 31, 0);
 const TgaColor BLUE16 = COLOR16(0, 0, 31);
+const TgaColor YELLOW16 = COLOR16(31, 31, 0);
+const TgaColor MAGENTA16 = COLOR16(31, 0, 31);
+const TgaColor CYAN16 = COLOR16(0, 31, 31);
+const TgaColor PURPLE16 = COLOR16(16, 0, 31);
+const TgaColor ROSE16 = COLOR16(31, 0, 16);
+const TgaColor ORANGE16 = COLOR16(31, 16, 0);
+const TgaColor LIME16 = COLOR16(16, 31, 0);
+const TgaColor MINT16 = COLOR16(0, 31, 16);
+const TgaColor AZURE16 = COLOR16(0, 16, 31);
 const TgaColor WHITE16 = COLOR16(31, 31, 31);
 const TgaColor BLACK16 = COLOR16(0, 0, 0);
 
@@ -22,6 +31,15 @@ const TgaColor BLACK16 = COLOR16(0, 0, 0);
 const TgaColor BLUE24 = COLOR24(0, 0, 255);
 const TgaColor GREEN24 = COLOR24(0, 255, 0);
 const TgaColor RED24 = COLOR24(255, 0, 0);
+const TgaColor YELLOW24 = COLOR24(255, 255, 0);
+const TgaColor MAGENTA24 = COLOR24(255, 0, 255);
+const TgaColor CYAN24 = COLOR24(0, 255, 255);
+const TgaColor PURPLE24 = COLOR24(128, 0, 255);
+const TgaColor ROSE24 = COLOR24(255, 0, 128);
+const TgaColor ORANGE24 = COLOR24(255, 128, 0);
+const TgaColor LIME24 = COLOR24(128, 255, 0);
+const TgaColor MINT24 = COLOR24(0, 255, 128);
+const TgaColor AZURE24 = COLOR24(0, 128, 255);
 const TgaColor WHITE24 = COLOR24(255, 255, 255);
 const TgaColor BLACK24 = COLOR24(0, 0, 0);
 

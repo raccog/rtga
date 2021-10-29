@@ -51,17 +51,35 @@ const TgaColor GRAY8;
 const TgaColor DARK_GRAY8;
 const TgaColor BLACK8;
 
-// 16-bit Color Values (BGR)
+// 16-bit Color Values (RGB)
 const TgaColor RED16;
 const TgaColor GREEN16;
 const TgaColor BLUE16;
+const TgaColor YELLOW16;
+const TgaColor MAGENTA16;
+const TgaColor CYAN16;
+const TgaColor PURPLE16;
+const TgaColor ROSE16;
+const TgaColor ORANGE16;
+const TgaColor LIME16;
+const TgaColor MINT16;
+const TgaColor AZURE16;
 const TgaColor WHITE16;
 const TgaColor BLACK16;
 
-// 24-bit Color Values (BGR)
+// 24-bit Color Values (RGB)
 const TgaColor BLUE24;
 const TgaColor GREEN24;
 const TgaColor RED24;
+const TgaColor YELLOW24;
+const TgaColor MAGENTA24;
+const TgaColor CYAN24;
+const TgaColor PURPLE24;
+const TgaColor ROSE24;
+const TgaColor ORANGE24;
+const TgaColor LIME24;
+const TgaColor MINT24;
+const TgaColor AZURE24;
 const TgaColor WHITE24;
 const TgaColor BLACK24;
 
