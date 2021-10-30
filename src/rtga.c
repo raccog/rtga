@@ -50,7 +50,6 @@ int tga_alloc(TgaImageType image_type, uint16_t width, uint16_t height, uint8_t 
     // Return error codes if arguments are invalid
     if (!tga) return TGA_NULL_PTR_ERROR;
     if (!tga_valid_depth(pixel_depth)) return TGA_INVALID_PIXEL_DEPTH_ERROR;
-    if (tga->image_data) return TGA_ALREADY_ALLOCATED_ERROR;
 
     // Update header and state
     memset(&tga->header, 0, sizeof(TgaHeader));
