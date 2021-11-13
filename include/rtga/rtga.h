@@ -31,17 +31,17 @@ typedef struct {
 //
 
 // 8-bit Greyscale Color
-#define COLOR8(c) {{c}, 8}
+#define COLOR8(c) (TgaColor){{c}, 8}
 
 // 16-bit RGB Color
 #define COLOR16(r, g, b) \
-{{(b & 0x1f) | ((g & 0x7) << 5), ((g & 0x1c) >> 2) | ((r & 0x1f) << 2)}, 16}
+(TgaColor){{(b & 0x1f) | ((g & 0x7) << 5), ((g & 0x1c) >> 2) | ((r & 0x1f) << 2)}, 16}
 
 // 24-bit RGB Color
-#define COLOR24(r, g, b) {{b, g, r}, 24}
+#define COLOR24(r, g, b) (TgaColor){{b, g, r}, 24}
 
 // 32-bit RGBA Color
-#define COLOR32(r, g, b, a) {{b, g, r, a}, 32}
+#define COLOR32(r, g, b, a) (TgaColor){{b, g, r, a}, 32}
 
 // 8-bit Greyscale Values (C)
 const TgaColor WHITE8;
